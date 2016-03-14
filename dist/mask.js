@@ -1,7 +1,7 @@
 /*!
  * angular-ui-mask
  * https://github.com/angular-ui/ui-mask
- * Version: 1.8.1 - 2016-02-23T07:32:45.020Z
+ * Version: 1.8.1 - 2016-03-14T16:35:38.069Z
  * License: MIT
  */
 
@@ -128,7 +128,12 @@ angular.module('ui.mask', [])
                                 value = unmaskValue(fromModelValue || '');
                                 isValid = validateValue(value);
                                 controller.$setValidity('mask', isValid);
-                                return isValid && value.length ? maskValue(value) : undefined;
+
+                                if ((isValid && value.length) || linkOptions.returnInvalid) {
+                                    return maskValue(value);
+                                } else {
+                                    return undefined;
+                                }
                             }
 
                             function parser(fromViewValue) {
@@ -143,7 +148,8 @@ angular.module('ui.mask', [])
                                 // to be out-of-sync with what the controller's $viewValue is set to.
                                 controller.$viewValue = value.length ? maskValue(value) : '';
                                 controller.$setValidity('mask', isValid);
-                                if (isValid) {
+
+                                if (isValid || linkOptions.returnInvalid) {
                                     return modelViewValue ? controller.$viewValue : value;
                                 } else {
                                     return undefined;
