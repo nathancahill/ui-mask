@@ -310,6 +310,10 @@ angular.module('ui.mask', [])
                                 var valueMasked = '',
                                         maskCaretMapCopy = maskCaretMap.slice();
 
+                                if (unmaskedValue === '' && linkOptions.unmaskEmpty) {
+                                    return unmaskedValue;
+                                }
+
                                 angular.forEach(maskPlaceholder.split(''), function(chr, i) {
                                     if (unmaskedValue.length && i === maskCaretMapCopy[0]) {
                                         valueMasked += unmaskedValue.charAt(0) || '_';
